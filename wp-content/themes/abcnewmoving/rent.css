@@ -1,0 +1,188 @@
+.rent{
+    width: 1024px;
+    margin: 0 auto;
+    padding-top: 32px;
+    text-align: center;
+    color: #2e2e31;
+    padding-bottom: 32px;
+}
+
+.rent-title{
+    font-family: 'Montserrat';
+    font-weight: bold;
+    font-size: 30px;
+    color: #2e2e31;
+    margin-bottom: 18px;
+}
+
+.undrln{
+    text-decoration: underline;
+}
+
+.we-title{
+    color: #e4911c;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Montserrat';
+    margin-top: 24px;
+}
+
+.last{
+    margin-right: 0 !important;
+}
+
+.we-text{
+    font-family: 'PT Sans', Arial, sans-serif;
+    font-size: 15px;
+    color: #231f20;
+    margin-top: 11px;
+}
+
+.we{
+    margin-right: 20px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.we-text span{
+    font-weight: bold;
+}
+
+.rent-info{
+    padding: 25px 0;
+    border-bottom: solid 4px #fee930;
+    border-top: solid 4px #fee930;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: 'Montserrat';
+    color: #2e2e31;
+    margin: 32px 0;
+}
+
+.rent-info span{
+    color: #e4921e;
+}
+
+.twenty{
+    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Montserrat';
+}
+
+.pricing{
+    width: 234px;
+    display: inline-block;
+    vertical-align: top;
+    border: solid 2px #000000;
+    margin-top: 24px;
+    padding-top: 12px;
+    margin-right: 20px;
+}
+
+.pricing-title{
+    font-size: 16px;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.pricing-size{
+    font-family: 'PT Sans', Arial, sans-serif;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.pricing-middle{
+    border-top: solid 1px #000000;
+    padding-top: 16px;
+    font-size: 18px;
+    font-family: 'PT Sans', Arial, sans-serif;
+    line-height: 24px;
+    padding-bottom: 16px;
+}
+
+.pricing-middle span{
+    font-weight: bold;
+}
+
+.pricing-bottom{
+    padding: 10px 16px;
+    background-color: #000000;
+    font-size: 16px;
+    color: #fee930;
+    font-family: 'PT Sans', Arial, sans-serif;
+}
+
+.pricing-weeks{
+    float: left;
+    text-align: left;
+}
+
+.pricing-dollars{
+    float: right;
+    text-align: right;
+}
+
+.rent-order{
+    width: 250px;
+    height: 39px;
+    display: block;
+    position: relative;
+    background: url("./img/rentabox-order-button-hover.png");
+    background-position: 0 0;
+    right: 10px;
+    bottom: 3px;
+    margin-bottom: -3px;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    font-size: 16px;
+    padding-top: 11px;
+}
+
+.rent-order:hover{
+     background-position: -250px 0;
+}
+
+.rent-order:active{
+    background-position: -500px 0;
+}
+
+.bin{
+    font-size: 24px;
+    font-family: 'Montserrat';
+    font-weight: bold;
+    margin: 32px 0 24px 0;
+}
+
+.bin-text{
+    display: inline-block;
+    vertical-align: top;
+    font-size: 15px;
+    font-family: 'PT Sans', Arial, sans-serif;
+}
+
+.bin-text p{
+    margin-bottom: 47px;
+}
+
+.left-text{
+    text-align: right;
+}
+
+.right-text{
+    text-align: left;
+}
+
+.bin-thing-up{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 30px;
+    font-size: 17px;
+    font-family: 'PT Sans', Arial, sans-serif;
+    line-height: 35px;
+    text-align: left;
+}
+
+.bin-thing-up span{
+    font-weight: bold;
+}
