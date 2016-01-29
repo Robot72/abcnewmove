@@ -181,7 +181,7 @@
 		<? wp_nav_menu(array('menu' => 'top-menu', 'menu_class' => 'top-menu')); ?>
 	</div>
 </nav>
-<div class="map demo-2">
+<!-- <div class="map demo-2">
 	<div id="map"></div>
 	<div class="title">
 	<div class="full-box">
@@ -228,4 +228,4 @@
 		</div>
 	</div>
 
-</div>
+</div> -->
