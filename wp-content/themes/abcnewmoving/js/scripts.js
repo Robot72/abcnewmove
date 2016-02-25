@@ -231,7 +231,7 @@ var Cart = {};
 Cart.allProducts = [];
 Cart.oneProduct = [];
 Cart.idOpeningProduct = 0;
-Cart.pushInProduct = function (id, size, quantity, price, title) {
+Cart.pushInProduct = function (id, size, quantity, price, title, photo) {
     var isNotAdded = true;
     for (var i in Cart.oneProduct) {
         if (size == Cart.oneProduct[i].size) {
@@ -245,7 +245,8 @@ Cart.pushInProduct = function (id, size, quantity, price, title) {
         size: size,
         quantity: quantity,
         price: price,
-        title: title
+        title: title,
+        photo: photo,
     };
     if (isNotAdded) {
         Cart.oneProduct.push(product);
@@ -278,7 +279,7 @@ Cart.addToCart = function () {
 Cart.openCart = function () {
     jQuery('cart-opened').html('');
     for (var i in Cart.allProducts) {
-        var div = '<div class="item"><div class="remove"></div><div class="img"></div><div class="description"><input type="hidden" class="pr-id" value="' + Cart.allProducts[i].id + '"><input type="hidden" class="pr-size" value="' + Cart.allProducts[i].size + '">';
+        var div = '<div class="item"><div class="remove"></div><div class="img"><img src="' + Cart.allProducts[i].photo + '"></div><div class="description"><input type="hidden" class="pr-id" value="' + Cart.allProducts[i].id + '"><input type="hidden" class="pr-size" value="' + Cart.allProducts[i].size + '">';
         div += '<div class="title">' + Cart.allProducts[i].title + '</div><div class="quantity">';
         div += 'Quantity: <span class="minus"></span> <input type="text" value="' + Cart.allProducts[i].quantity + '" maxlength="2"> <span class="plus"></span>';
         div += '</div><div class="price">$<span>' + Cart.allProducts[i].quantity * Cart.allProducts[i].price + '</span></div></div></div>';
@@ -356,8 +357,19 @@ Cart.updateTotalAmount = function () {
             totalSumm += price;
         }
     }
-    totalSumm = Math.round(totalSum * 100) / 100;
+    totalSumm = Math.round(totalSumm * 100) / 100;
     jQuery('.finish .total span').text('$' + totalSumm);
+}
+Cart.popCart = function () {
+    var id = jQuery(this).parent().find('.description .pr-id').val();
+    var size = jQuery(this).parent().find('.description .pr-size').val();
+    for(var i in Cart.allProducts) {
+        if(id == Cart.allProducts[i].id && size == Cart.allProducts[i].size) {
+            Cart.allProducts.slice(i, 1);
+        }
+    }
+    jQuery(this).parent().remove();
+    Cart.updateTotalAmount();
 }
 jQuery(document).ready(function ($) {
     jQuery(document).on('click', '.clear-product', D.clearProduct);
@@ -365,7 +377,7 @@ jQuery(document).ready(function ($) {
     jQuery(document).on('click', '.cart .btn', Cart.openCart);
     jQuery(document).on('click', '.plus', Cart.plusQuantity);
     jQuery(document).on('click', '.minus', Cart.minusQuantity);
-    
+    jQuery(document).on('click', '.item .remove', Cart.popCart);
 
     $('.items-buy').click(function () {
         var productId = jQuery(this).find('a input.product-id').val();
@@ -377,7 +389,8 @@ jQuery(document).ready(function ($) {
         jQuery('.input-small').val(q);
         var price = jQuery('.price-small').text();
         var title = jQuery('.buy-title').text();
-        Cart.pushInProduct(Cart.idOpeningProduct, jQuery('.left-line').text(), q, parseFloat(price), title);
+        var photo = jQuery('#big-buy').attr('src');
+        Cart.pushInProduct(Cart.idOpeningProduct, jQuery('.left-line').text(), q, parseFloat(price), title, photo);
     });
 
     jQuery(".plus-medium").click(function () {
@@ -398,7 +411,8 @@ jQuery(document).ready(function ($) {
             jQuery('.input-small').val(q);
             var price = jQuery('.price-small').text();
             var title = jQuery('.buy-title').text();
-            Cart.pushInProduct(Cart.idOpeningProduct, jQuery('.left-line').text(), q, parseFloat(price), title);
+            var photo = jQuery('#big-buy').attr('src');
+            Cart.pushInProduct(Cart.idOpeningProduct, jQuery('.left-line').text(), q, parseFloat(price), title, photo);
         }
     });
 

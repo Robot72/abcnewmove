@@ -290,3 +290,7 @@ a.modalCloseImg {
     display: block;
     margin: 0 auto;
 }
+.item .img img {
+    width: 50px;
+    height: 50px;
+}
