@@ -24,8 +24,8 @@
 					<div class="close"></div>
 					<div class="title">Shopping cart</div>
 				</div>
-				<div class="content" data-mcs-theme="dark">
-					<div class="item">
+				<div class="content cart-opened" data-mcs-theme="dark">
+					<!--<div class="item">
 						<div class="remove"></div>
 						<div class="img"></div>
 						<div class="description">
@@ -46,117 +46,7 @@
 							</div>
 							<div class="price">$<span>0</span></div>
 						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title3</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title4</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title5</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title6</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title7</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title8</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title9</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title10</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title11</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span> 
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
-					<div class="item">
-						<div class="remove"></div>
-						<div class="img"></div>
-						<div class="description">
-							<div class="title">Title12</div>
-							<div class="quantity">
-								Quantity: <span class="minus"></span> <input type="text" value="0" maxlength="2"> <span class="plus"></span>
-							</div>
-							<div class="price">$<span>0</span></div>
-						</div>
-					</div>
+					</div>-->
 				</div>
 				<div class="finish">
 					<div class="total">
@@ -181,7 +71,7 @@
 		<? wp_nav_menu(array('menu' => 'top-menu', 'menu_class' => 'top-menu')); ?>
 	</div>
 </nav>
-<!-- <div class="map demo-2">
+<div class="map demo-2">
 	<div id="map"></div>
 	<div class="title">
 	<div class="full-box">
@@ -228,4 +118,4 @@
 		</div>
 	</div>
 
-</div> -->
+</div>

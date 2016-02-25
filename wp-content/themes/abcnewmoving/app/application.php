@@ -11,17 +11,29 @@ class Application
     private $_connection;
     private $_values;
     private $_sizePage = 10;
-    private $_host = DB_HOST;
-    private $_dbname = DB_NAME;
-    private $_user = DB_USER;
-    private $_pass = DB_PASSWORD;
+    private $_host = '198.71.225.58:3306';
+    private $_dbname = 'abcnm_db';
+    private $_user = 'abcnm_usr';
+    private $_pass = 'jy5lyuZZuIv0';
     protected static $_instance;
     private function __construct() 
     {
         try 
         {
             $this->_connection = new PDO("mysql:host=$this->_host;dbname=$this->_dbname", $this->_user, $this->_pass);
-            $this->_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);/*
+            if(!empty($this->_host)) {
+                $this->_host = '198.71.225.58:3306';
+            }
+            if(!empty($this->_name)) {
+                $this->_name = 'abcnm_db';
+            }
+            if(!empty($this->_user)) {
+                $this->_host = 'abcnm_usr';
+            }
+            if(!empty($this->_pass)) {
+                $this->_host = 'jy5lyuZZuIv0';
+            }*/
         } catch (Exception $ex) {
             echo "Ошибка в скрипте.";
             file_put_contents('PDOErrors.txt', $e->getMessage(), FILE_APPEND);
@@ -205,4 +217,9 @@ class Application
         $host = $_SERVER['SERVER_NAME'];
         header("Location: http://$host/$scriptName.php");
     }    
+    
+    public static function sDeb()
+    {
+        echo 'call method "sDeb"';
+    }
 }

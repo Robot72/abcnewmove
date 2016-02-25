@@ -13,7 +13,7 @@
     margin-top: 32px;
 }
 
-.item-buy{
+.item-buy, .items-buy{
     display: inline-block;
     width: 244px;
     height: 322px;
@@ -23,16 +23,17 @@
     cursor: pointer;
 }
 
-.item-buy:hover{
+.item-buy:hover, .items-buy:hover{
     -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
     box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
     transition: 0.3s;
 }
 
-.item-buy img{
+.item-buy img, .items-buy img{
     margin: 0 auto;
     display: block;
+    max-width: 140px;
 }
 
 .sizes{
@@ -89,24 +90,24 @@
 }
 
 #modalOverlay {
-    background-color:#000;  /* Тут выбираем цвет затемнения */
-    cursor:wait;  /* Курсор при наведении на затемненную область */
-    filter: alpha(opacity=50); /* Интенсивность затемнения */
+    background-color:#000;  /* пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+    cursor:wait;  /* пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
+    filter: alpha(opacity=50); /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
     height: 100%;
 }
 
 #modalContainer {
-    height:500px;   /* Для растягивания по высоте */
+    height:500px;   /* пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ */
     width:742px;
-    left:50%;  /*в купе с margin-left, которая равна минус половине ширины центруют по горизонтали*/
-    top:10%;   /*центрует по вертикали, вместе с margin-top, если задать высоту*/
+    left:50%;  /*пїЅ пїЅпїЅпїЅпїЅ пїЅ margin-left, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ*/
+    top:10%;   /*пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ margin-top, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ*/
     margin-left:-371px;
     /* margin-top: -70px; */
     background-color:#fff;
 }
 a.modalCloseImg {
     background:url("./img/button-close-normal.png") no-repeat 0 0;
-    width:32px;  /* Положение отличается от тех, что в примере. Мне кажется так удобнее */
+    width:32px;  /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
     height:32px;
     display:inline;
     z-index:3200;
@@ -138,7 +139,7 @@ a.modalCloseImg {
 
 #big-buy{
     width: 350px;
-    height: auto;
+    max-height: 500px;
     margin: 0 auto;
     display: block;
 }
