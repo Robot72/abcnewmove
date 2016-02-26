@@ -209,6 +209,9 @@ D.successGetProduct = function (resp) {
     if (typeof (metaInfo._wpsc_price) != 'undefined' && commonPrice) {
         D.priceTr('small', ' - ', metaInfo._wpsc_price);
     }
+    if (typeof (metaInfo.type_name) != 'undefined') {
+        jQuery('.thed .left-line').text(metaInfo.type_name);
+    }
 
     jQuery('.buy-open').modal();
 }

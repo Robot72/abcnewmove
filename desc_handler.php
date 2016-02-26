@@ -11,7 +11,6 @@ if (isset($_POST['product_id'])) {
         . "WHERE ID = $product_id; ";
     $product = $app->query($query);
     $product_info = $product->fetch();
-    
     //PHOTOS of the product
     $product_photos = $app->query("SELECT * "
             . "FROM 6mdwiG_posts "
@@ -21,6 +20,7 @@ if (isset($_POST['product_id'])) {
             . "FROM 6mdwiG_posts "
             . "WHERE post_parent = $product_id AND post_type = \"wpsc-product\"; ");
     $item_product = $items_product->fetch();
+    
     if(isset($item_product)) {
         $id = $item_product['ID'];
         if(isset($id)) {
@@ -93,9 +93,13 @@ if (isset($_POST['product_id'])) {
             $value = $m['meta_value'];
             $key = 'size_price4';
         }
+        if( !strcmp($m['meta_key'], 'type_name') ) { 
+            $value = $m['meta_value'];
+            $key = 'type_name';
+        }
         if(isset($key) && isset($value)) {
             $meta_info[$key] = $value;      
-        }        
+        }                
     }
     if(count($meta_info) == 0) {
         $meta2 = $app->query($meta_query2); while ($m2 = $meta2->fetch()) {
@@ -107,14 +111,22 @@ if (isset($_POST['product_id'])) {
         }        
     }
     
-    echo json_encode(array(
+    if(isset($src)) {
+        $title_photo = $src['guid'];
+    }
+    if(!isset($src) && isset($src2)) {
+        $title_photo = $src2['guid'];
+    }
+    $response = array(
         'id' => $product_info['ID'],
         'post_title' => $product_info['post_title'],
         'post_content' => $product_info['post_content'],
-        'title_photo' => empty($src['guid']) ? $src2['guid'] : $src['guid'],
+        'title_photo' => $title_photo,
         'photos' => $all_photos,
         'meta_info' => $meta_info,
         'debug' =>count($meta_info),
         //'debug1' =>$meta_query
-    ));
+    );
+    
+    echo json_encode($response);
 }
