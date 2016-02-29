@@ -122,16 +122,9 @@ jQuery(document).ready(function ($) {
     //   $(".map .featured h4.subtitle").text("We operate all around greater Vancouver");
     // }
 
-    $(".cart-block .top-line .close").click(function () {
-        $(".cart-block").css("display", "none");
-    });
-    $(".cart .btn").click(function () {
-        $(".cart-block").css("display", "block");
-    });
-    
-    $(".cart-block .content .item .remove").click(function () {
-        $(this).closest(".item").remove();
-    });
+    $(".cart-block .top-line .close").click(function () { $(".cart-block").css("display", "none"); });
+    $(".cart .btn").click(function () { $(".cart-block").css("display", "block"); });
+    /*$(".cart-block .content .item .remove").click(function () { $(this).closest(".item").remove(); });*/
 
 
     $(".cart-block .content").mCustomScrollbar();
@@ -140,7 +133,7 @@ jQuery(document).ready(function ($) {
 
 
 //D is description of the product.
-var D = {}
+var D = {};
 /**
  * Append markup for table within description
  * @param {type} typeSize
@@ -222,18 +215,39 @@ D.priceTotal = function () {
         var quantity = Cart.oneProduct[i].quantity;
         totalPrice += price * quantity;
     }
-    jQuery('.price-total-buy').text('$' + totalPrice);
+    jQuery('.price-total-buy').text('$' + Cart.round(totalPrice));
 }
 D.clearProduct = function () {
     Cart.oneProduct = [];
     Cart.updateCartLabel();
     return false;
 }
+D.minusQuantity = function (selectorInput, selectorPrice) {
+    if (jQuery(selectorInput).val() != 0) {
+        var q = parseInt(jQuery(selectorInput).val()) - 1;
+        jQuery(selectorInput).val(q);
+        var price = jQuery(selectorPrice).text();
+        var title = jQuery('.buy-title').text();
+        var photo = jQuery('#big-buy').attr('src');
+        Cart.pushInProduct(Cart.idOpeningProduct, jQuery(selectorInput).parent().parent().find('.left-line').text(), q, parseFloat(price), title, photo);
+    }
+}
+D.plusQuantity = function (selectorInput, selectorPrice) {
+    var q = parseInt(jQuery(selectorInput).val()) + 1;
+    jQuery(selectorInput).val(q);
+    var price = jQuery(selectorPrice).text();
+    var title = jQuery('.buy-title').text();
+    var photo = jQuery('#big-buy').attr('src');
+    Cart.pushInProduct(Cart.idOpeningProduct, jQuery(selectorInput).parent().parent().find('.left-line').text(), q, parseFloat(price), title, photo);
+}
 //C is cart
 var Cart = {};
 Cart.allProducts = [];
 Cart.oneProduct = [];
 Cart.idOpeningProduct = 0;
+Cart.round = function (summ) {
+    return Math.round(parseFloat(summ) * 100) / 100;
+}
 Cart.pushInProduct = function (id, size, quantity, price, title, photo) {
     var isNotAdded = true;
     for (var i in Cart.oneProduct) {
@@ -280,7 +294,7 @@ Cart.addToCart = function () {
     D.clearProduct();
 }
 Cart.openCart = function () {
-    jQuery('cart-opened').html('');
+    jQuery('.cart-opened').html('');
     for (var i in Cart.allProducts) {
         var div = '<div class="item"><div class="remove"></div><div class="img"><img src="' + Cart.allProducts[i].photo + '"></div><div class="description"><input type="hidden" class="pr-id" value="' + Cart.allProducts[i].id + '"><input type="hidden" class="pr-size" value="' + Cart.allProducts[i].size + '">';
         div += '<div class="title">' + Cart.allProducts[i].title + '</div><div class="quantity">';
@@ -344,7 +358,7 @@ Cart.minusQuantity = function () {
         }
     }
     var s = Math.round(kolvo * price * 100) / 100;
-    jQuery(this).parent().parent().find('.price span').text(kolvo * s);
+    jQuery(this).parent().parent().find('.price span').text(s);
     Cart.updateTotalAmount();
     return false;
 }
@@ -352,7 +366,7 @@ Cart.updateTotalAmount = function () {
     var prices = jQuery('.description .price span');
     var totalSumm = 0;
     for (var i in prices) {
-        var price = prices[i].innerText;
+        var price = prices[i].innerHTML;
         price = parseFloat(price);
         if(isNaN(price)) {
             totalSumm += 0;
@@ -362,17 +376,52 @@ Cart.updateTotalAmount = function () {
     }
     totalSumm = Math.round(totalSumm * 100) / 100;
     jQuery('.finish .total span').text('$' + totalSumm);
+    Cart.updateCartLabel();
 }
 Cart.popCart = function () {
     var id = jQuery(this).parent().find('.description .pr-id').val();
     var size = jQuery(this).parent().find('.description .pr-size').val();
     for(var i in Cart.allProducts) {
+        console.log(id == Cart.allProducts[i].id && size == Cart.allProducts[i].size)
+        
         if(id == Cart.allProducts[i].id && size == Cart.allProducts[i].size) {
-            Cart.allProducts.slice(i, 1);
+            Cart.allProducts.splice(i, 1);
         }
     }
     jQuery(this).parent().remove();
     Cart.updateTotalAmount();
+}
+Cart.checkout = function () {
+    var price = jQuery('.finish .total span').text();
+    price = price.substr(1);
+    var desc = '';
+    for(var i in Cart.allProducts) {
+        desc += Cart.allProducts[i].title + ' (' + Cart.allProducts[i].id + ') ';
+        desc += Cart.allProducts[i].size + ', ';
+    }
+    jQuery.ajax({
+        url: '/pay.php',
+        data: {
+            amount: price,
+            desc: desc
+        },
+        dataType: 'json',
+        type: 'post',
+        success: Cart.successGenerateHash,
+        error: function (resp) {
+            console.log(resp);
+        }
+    });
+    return false;
+}
+Cart.successGenerateHash = function (resp) {
+    if(typeof(resp) != 'undefined') {
+        jQuery('#amount').val(resp.amount);
+        jQuery('#description').val('Sale products');
+        jQuery('#transaction_description').val(resp.desc);
+        jQuery('#hash').val(resp.hash);
+        jQuery('#paylane-submit').trigger('click');
+    }
 }
 jQuery(document).ready(function ($) {
     jQuery(document).on('click', '.clear-product', D.clearProduct);
@@ -387,55 +436,15 @@ jQuery(document).ready(function ($) {
         D.getProduct(productId);
     });
 
-    jQuery(document).on('click', '.plus-small', function () {
-        var q = parseInt(jQuery('.input-small').val()) + 1;
-        jQuery('.input-small').val(q);
-        var price = jQuery('.price-small').text();
-        var title = jQuery('.buy-title').text();
-        var photo = jQuery('#big-buy').attr('src');
-        Cart.pushInProduct(Cart.idOpeningProduct, jQuery('.left-line').text(), q, parseFloat(price), title, photo);
-    });
+    jQuery(document).on('click', '.plus-small', function () { D.plusQuantity('.input-small', '.price-small') });
+    jQuery(document).on('click', '.plus-medium', function () { D.plusQuantity('.input-medium', '.price-medium') });
+    jQuery(document).on('click', '.plus-large', function () { D.plusQuantity('.input-large', '.price-large') });
+    jQuery(document).on('click', '.plus-extra', function () { D.plusQuantity('.input-extra', '.price-extra') });
 
-    jQuery(".plus-medium").click(function () {
-        jQuery('.input-medium').val(parseInt(jQuery('.input-medium').val()) + 1);
-    });
-
-    jQuery(".plus-large").click(function () {
-        jQuery('.input-large').val(parseInt(jQuery('.input-large').val()) + 1);
-    });
-
-    jQuery(".plus-extra").click(function () {
-        jQuery('.input-extra').val(parseInt(jQuery('.input-extra').val()) + 1);
-    });
-
-    jQuery(document).on('click', ".minus-small", function () {
-        if (jQuery('.input-small').val() != 0) {
-            var q = parseInt(jQuery('.input-small').val()) - 1;
-            jQuery('.input-small').val(q);
-            var price = jQuery('.price-small').text();
-            var title = jQuery('.buy-title').text();
-            var photo = jQuery('#big-buy').attr('src');
-            Cart.pushInProduct(Cart.idOpeningProduct, jQuery('.left-line').text(), q, parseFloat(price), title, photo);
-        }
-    });
-
-    jQuery(".minus-medium").click(function () {
-        if (jQuery('.input-medium').val() != 0) {
-            jQuery('.input-medium').val(parseInt(jQuery('.input-medium').val()) - 1);
-        }
-    });
-
-    jQuery(".minus-large").click(function () {
-        if (jQuery('.input-large').val() != 0) {
-            jQuery('.input-large').val(parseInt(jQuery('.input-large').val()) - 1);
-        }
-    });
-
-    jQuery(".minus-extra").click(function () {
-        if (jQuery('.input-extra').val() != 0) {
-            jQuery('.input-extra').val(parseInt(jQuery('.input-extra').val()) - 1);
-        }
-    });
+    jQuery(document).on('click', ".minus-small", function () { D.minusQuantity('.input-small', '.price-small'); });
+    jQuery(document).on('click', ".minus-medium", function () { D.minusQuantity('.input-medium', '.price-medium'); });
+    jQuery(document).on('click', ".minus-large", function () { D.minusQuantity('.input-large', '.price-large'); });
+    jQuery(document).on('click', ".minus-extra", function () { D.minusQuantity('.input-extra', '.price-extra'); });
 
     jQuery('.mini-img').click(function () {
         jQuery('.mini-img').removeClass("active");
@@ -443,6 +452,31 @@ jQuery(document).ready(function ($) {
         jQuery(this).addClass("active");
     });
     
+    jQuery(document).on('click', '#checkout', Cart.checkout);
     
+    jQuery('.input-small').keyup(function (e) {
+        console.log('input')
+    })
 });
+
+jQuery('.quantity input').keyup(function() {
+    var input = jQuery(this);
+    var kolvo = input.val();
+    console.log(kolvo)
+    console.log(input)
+    //update the product in the cart
+    var id = jQuery(this).parent().parent().find('.pr-id').val();
+    var size = jQuery(this).parent().parent().find('.pr-size').val();
+    var price = 0;
+    for(var i in Cart.allProducts) {
+        if(id == Cart.allProducts[i].id && size == Cart.allProducts[i].size) {
+            Cart.allProducts[i].quantity = kolvo;
+            price = Cart.allProducts[i].price;
+        }
+    }
+    var s = Math.round(kolvo * price * 100) / 100;
+    jQuery(this).parent().parent().find('.price span').text(s);
+    Cart.updateTotalAmount();
+});
+
 

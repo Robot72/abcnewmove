@@ -14,14 +14,15 @@ $stmt = $app->query("SELECT 6mdwiG_terms.name, 6mdwiG_terms.name, 6mdwiG_posts.p
         . "on 6mdwiG_term_taxonomy.term_taxonomy_id = 6mdwiG_term_relationships.term_taxonomy_id "
         . "join 6mdwiG_terms "
         . "on 6mdwiG_terms.term_id = 6mdwiG_term_relationships.term_taxonomy_id "
-        . "where 6mdwiG_term_taxonomy.taxonomy = \"wpsc_product_category\";");
+        . "where 6mdwiG_term_taxonomy.taxonomy = \"wpsc_product_category\" ;");
 
 $categories = $app->query("SELECT 6mdwiG_terms.name, 6mdwiG_terms.slug, 6mdwiG_terms.term_id, 6mdwiG_term_taxonomy.term_taxonomy_id "
         . "FROM 6mdwiG_terms join 6mdwiG_term_taxonomy "
         . "ON 6mdwiG_terms.term_id = 6mdwiG_term_taxonomy.term_id "
         . "WHERE "
         . "6mdwiG_term_taxonomy.taxonomy = \"wpsc_product_category\" AND "
-        . "6mdwiG_term_taxonomy.count > 0; ");
+        . "6mdwiG_term_taxonomy.count > 0 "
+        . "ORDER BY 6mdwiG_term_taxonomy.count ; ");
 
 //*------------------ VIEWS and LOGIC -------------------------------*/
 get_header() ?>
@@ -71,12 +72,50 @@ get_header() ?>
     
                 <div class="items-buy">
                     <a class="item-buy<?php echo $flag == true ? ' defaultDOMWindow' : '' ?>"><input type="hidden" class="product-id" value="<?php echo $row['ID'] ?>">
-                        <img src="<?php if(empty($src['guid'])) { echo $src2['guid']; } else { echo $src['guid']; } ?>">
-                        <div class="sizes"><?php $mm = $app->query($meta_query); while($m = $mm->fetch()) { 
-                                if( !strcmp($m['meta_key'], 'sizes_available') ) { 
-                                    echo $m['meta_value'];                                        
+                        <img src="<?php 
+                        
+                        if(empty($src['guid'])) { 
+                            if(empty($src2['guid']))
+                                echo 'http://www.m2.by/img/emptyobject/resulttable.jpeg';
+                            else 
+                                echo $src2['guid'];
+                        } else { 
+                            echo $src['guid'];                             
+                        } 
+                        ?>">
+                        <div class="sizes"><?php 
+                            //Get types_available
+                            $mm = $app->query($meta_query); $flag1 = true; while($m = $mm->fetch()) { 
+                                if( !strcmp($m['meta_key'], 'types_available') ) { 
+                                    echo $m['meta_value'];
+                                    $flag1 = false;
+                                }          
+                            } 
+                            //Define sizes available
+                            $countSizes = 0;
+                            $mm = $app->query($meta_query); while($m = $mm->fetch()) { 
+                                if( !strncmp($m['meta_key'], 'size_', 5) ) { 
+                                    $countSizes++;
+                                }          
+                            }                             
+                            if($flag1 == true) {
+                                if($countSizes == 0)
+                                    echo 1;
+                                else 
+                                    echo round ($countSizes / 2);
+                            } ?>
+                            
+                             <?php
+                            //Get name_type ..
+                             $mm = $app->query($meta_query); $flag0 = true; while($m = $mm->fetch()) { 
+                                if( !strcmp($m['meta_key'], 'type_name') ) { 
+                                    echo strtolower($m['meta_value']); 
+                                    $flag0 = false;
                                 }                            
-                            } ?> sizes available</div>
+                            }; 
+                            if($flag0 == true)
+                                 echo 'sizes';
+                            ?> available</div>
                         <div class="mini-info">
                             <div class="buy-name"><?php echo $row['post_title'] ?></div>
                             <div class="buy-price">Price: <span>$<?php $meta = $app->query($meta_query); $f1 = true; while($m = $meta->fetch()) { 
@@ -91,7 +130,7 @@ get_header() ?>
                                         echo $m2['meta_value'];                                    
                                     }   
                                 }
-                            }
+                            } 
 ?></span></div>
                         </div>
                     </a>        
@@ -129,7 +168,9 @@ get_header() ?>
                     
                     <tr>
                         <td class="left-line">Small</td>
-                        <td class="center-line"><a class="minus-small"></a><input class="input-small" value="0"><a class="plus-small"></a></td>
+                        <td class="center-line">
+                            <a class="minus-small"></a>
+                            <input class="input-small" value="0"><a class="plus-small"></a></td>
                         <td>-</td>
                     </tr>
                     <tr>
@@ -159,6 +200,19 @@ get_header() ?>
         </div>
     </div>
 </div>
+<form action="https://secure.paylane.com/order/cart.html" method="post">
+    <input type="hidden" id="amount" name="amount" value="" />
+    <input type="hidden" id="currency" name="currency" value="USD" />
+    <input type="hidden" id="merchant_id" name="merchant_id" value="abcnewmove" />
+    <input type="hidden" id="description" name="description" value="" />
+    <input type="hidden" id="transaction_description" name="transaction_description" value="" />
+    <input type="hidden" id="transaction_type" name="transaction_type" value="S" />
+    <input type="hidden" id="back_url" name="back_url" value="http://www.abcnewmoving.com/buy-supplies/" />
+    <input type="hidden" id="language" name="language" value="en" />
+    <input type="hidden" id="hash" name="hash" value="" />
+    
+    <button id="paylane-submit" style="display: none;" type="submit">Pay with PayLane</button>
+</form>
 <style>
 .featured, .map{
     display: none;
