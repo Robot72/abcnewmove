@@ -298,7 +298,7 @@ Cart.openCart = function () {
     for (var i in Cart.allProducts) {
         var div = '<div class="item"><div class="remove"></div><div class="img"><img src="' + Cart.allProducts[i].photo + '"></div><div class="description"><input type="hidden" class="pr-id" value="' + Cart.allProducts[i].id + '"><input type="hidden" class="pr-size" value="' + Cart.allProducts[i].size + '">';
         div += '<div class="title">' + Cart.allProducts[i].title + '</div><div class="quantity">';
-        div += 'Quantity: <span class="minus"></span> <input type="text" value="' + Cart.allProducts[i].quantity + '" maxlength="2"> <span class="plus"></span>';
+        div += 'Quantity: <span class="minus"></span> <input type="text" class="input-quantity-cart" value="' + Cart.allProducts[i].quantity + '" maxlength="2"> <span class="plus"></span>';
         div += '</div><div class="price">$<span>' + Cart.allProducts[i].quantity * Cart.allProducts[i].price + '</span></div></div></div>';
         jQuery('.cart-opened').append(div);
     }
@@ -421,7 +421,32 @@ Cart.successGenerateHash = function (resp) {
         jQuery('#transaction_description').val(resp.desc);
         jQuery('#hash').val(resp.hash);
         jQuery('#paylane-submit').trigger('click');
+        /*jQuery.ajax({
+            url: 'https://secure.paylane.com/order/cart.html',
+            data: {
+                amount: resp.amount,
+                currency: 'USD',
+                merchant_id: 'abcnewmove',
+                description: resp.desc,
+                transaction_description: resp.desc,
+                transaction_type: 'S',
+                back_url: 'http://www.abcnewmoving.com/buy-supplies/',
+                language: 'en',
+                hash: resp.hash
+                
+            },
+            dataType: 'json',
+            type: 'post',
+            success: function (resp) {
+                console.log(resp);
+            },
+            error: function (resp) {
+                console.log(resp);
+            }
+        });*/
+        return false;
     }
+    
 }
 jQuery(document).ready(function ($) {
     jQuery(document).on('click', '.clear-product', D.clearProduct);
@@ -459,24 +484,38 @@ jQuery(document).ready(function ($) {
     })
 });
 
-jQuery('.quantity input').keyup(function() {
-    var input = jQuery(this);
-    var kolvo = input.val();
-    console.log(kolvo)
-    console.log(input)
-    //update the product in the cart
-    var id = jQuery(this).parent().parent().find('.pr-id').val();
-    var size = jQuery(this).parent().parent().find('.pr-size').val();
-    var price = 0;
-    for(var i in Cart.allProducts) {
-        if(id == Cart.allProducts[i].id && size == Cart.allProducts[i].size) {
-            Cart.allProducts[i].quantity = kolvo;
-            price = Cart.allProducts[i].price;
-        }
+jQuery(document).keyup(function (e) {
+    var className = e.currentTarget.activeElement.className;
+    if(className == 'input-small' || className == 'input-large' || className == 'input-medium' || className == 'input-extra') {
+        var q = parseInt(jQuery(e.target).val());
+        var price = jQuery(e.target).parent().parent().find('td').eq(2).text();
+        var title = jQuery('.buy-title').text();
+        var photo = jQuery('#big-buy').attr('src');
+        Cart.pushInProduct(Cart.idOpeningProduct, jQuery(e.target).parent().parent().find('.left-line').text(), q, parseFloat(price), title, photo);
     }
-    var s = Math.round(kolvo * price * 100) / 100;
-    jQuery(this).parent().parent().find('.price span').text(s);
-    Cart.updateTotalAmount();
-});
-
-
+    if(className == 'input-quantity-cart') {
+        var input = jQuery(e.target);
+        var kolvo = input.val();
+        if (kolvo == 99) {
+            kolvo = 99;
+        } 
+        if (kolvo < 0) {
+            kolvo = kolvo * (-1);
+        }
+        input.val(kolvo);
+        //update the product in the cart
+        var id = jQuery(e.target).parent().parent().find('.pr-id').val();
+        var size = jQuery(e.target).parent().parent().find('.pr-size').val();
+        var price = 0;
+        for(var i in Cart.allProducts) {
+            if(id == Cart.allProducts[i].id && size == Cart.allProducts[i].size) {
+                Cart.allProducts[i].quantity = kolvo;
+                price = Cart.allProducts[i].price;
+            }
+        }
+        var s = Math.round(kolvo * price * 100) / 100;
+        jQuery(e.target).parent().parent().find('.price span').text(s);
+        Cart.updateTotalAmount();
+        return false;
+    }
+})
