@@ -10,17 +10,13 @@ get_header() ?>
 
 
 <div class="content-buy">
-    
     <div class="cat-name">
-    
+        BOXESd
     </div>
-    
-    
-    
     <div class="items-buy">
         <a class="item-buy defaultDOMWindow" href="#buy-open">
             <img src="http://www.abcnewmoving.com/wp-content/themes/abcnewmoving/img/item-1.jpg">
-            <div class="sizes">16 sizes available</div>
+            <div class="sizes">6 sizes available</div>
             <div class="mini-info">
                 <div class="buy-name">Standart box</div>
                 <div class="buy-price">Price: <span>$4.00</span></div>
@@ -94,7 +90,7 @@ get_header() ?>
                 <div class="buy-price">Price: <span>$7.00</span></div>
             </div>
         </a>
-    </div> -->
+    </div>
 
     <div class="buy-open">
         <div class="overflowed">

@@ -129,6 +129,34 @@ jQuery(document).ready(function ($) {
 
     $(".cart-block .content").mCustomScrollbar();
 
+    if (!$("body").hasClass("page-id-2")) {
+
+        $("#menu-item-32 a").click(function(e){
+            e.preventDefault();
+            $(".moving-sub").stop().slideToggle(600,"linear", function () {});
+        });
+        
+    }
+
+    $(".dropdown-block .dropdown-item .title").click(function(){
+        if ( $(this).hasClass("active")) {
+            $(this).removeClass("active");
+        } else {
+            $(this).addClass("active");
+        }
+        $(this).next("div").stop().slideToggle(600,"linear", function () {});
+    });
+
+    var index_of_box_img = 2;
+    setInterval(function(){
+        $(".things-bin-img-bg .things-bin-img").attr("style", "background-image: url(/wp-content/themes/abcnewmoving/img/rentabox-wired-bin-content-0"+index_of_box_img+".png) ");
+        if (index_of_box_img == 3) {
+            index_of_box_img = 1;
+        } else {
+            index_of_box_img++;
+        }
+    },3000);
+
 });
 
 
@@ -172,12 +200,27 @@ D.successGetProduct = function (resp) {
     jQuery('#big-buy').attr('src', resp.title_photo);
 
     var photos = '';
-    for (var i in resp.all_photos) {
-        photos += '<div class="mini-img"><img src="';
-        photos += resp.all_photos[i];
-        photos += '></div>';
+    var flag = false;
+    for (var i in resp.photos) {
+        if(resp.photos[i] == resp.title_photo) {
+            flag = true;
+        }
     }
-    photos = '<div class="clear"></div>';
+    if(flag == false) {
+        photos += '<div class="mini-img active"><img src="';
+        photos += resp.title_photo;
+        photos += '"></div>';        
+    }
+    for (var i in resp.photos) {
+        if(resp.photos[i] == resp.title_photo) {
+            photos += '<div class="mini-img active"><img src="';
+        } else {
+            photos += '<div class="mini-img"><img src="';
+        }
+        photos += resp.photos[i];
+        photos += '"></div>';
+    }
+    photos += '<div class="clear"></div>';
     jQuery('.miniatures').html(photos);
 
     jQuery('.prices').html('<tr class="thed"><td class="left-line">Size</td><td class="center-line">Quantity</td><td>Price</td></tr>');
@@ -299,7 +342,7 @@ Cart.openCart = function () {
         var div = '<div class="item"><div class="remove"></div><div class="img"><img src="' + Cart.allProducts[i].photo + '"></div><div class="description"><input type="hidden" class="pr-id" value="' + Cart.allProducts[i].id + '"><input type="hidden" class="pr-size" value="' + Cart.allProducts[i].size + '">';
         div += '<div class="title">' + Cart.allProducts[i].title + '</div><div class="quantity">';
         div += 'Quantity: <span class="minus"></span> <input type="text" class="input-quantity-cart" value="' + Cart.allProducts[i].quantity + '" maxlength="2"> <span class="plus"></span>';
-        div += '</div><div class="price">$<span>' + Cart.allProducts[i].quantity * Cart.allProducts[i].price + '</span></div></div></div>';
+        div += '</div><div class="price">$<span>' + Math.round(Cart.allProducts[i].quantity * Cart.allProducts[i].price * 100) / 100 + '</span></div></div></div>';
         jQuery('.cart-opened').append(div);
     }
     Cart.updateTotalAmount();
@@ -399,11 +442,12 @@ Cart.checkout = function () {
         desc += Cart.allProducts[i].title + ' (' + Cart.allProducts[i].id + ') ';
         desc += Cart.allProducts[i].size + ', ';
     }
+    Cart.tranDesc = desc;
     jQuery.ajax({
         url: '/pay.php',
         data: {
             amount: price,
-            desc: desc
+            desc: price
         },
         dataType: 'json',
         type: 'post',
@@ -417,8 +461,8 @@ Cart.checkout = function () {
 Cart.successGenerateHash = function (resp) {
     if(typeof(resp) != 'undefined') {
         jQuery('#amount').val(resp.amount);
-        jQuery('#description').val('Sale products');
-        jQuery('#transaction_description').val(resp.desc);
+        jQuery('#description').val('DESC');
+        jQuery('#transaction_description').val(Cart.tranDesc);
         jQuery('#hash').val(resp.hash);
         jQuery('#paylane-submit').trigger('click');
         /*jQuery.ajax({
@@ -518,4 +562,4 @@ jQuery(document).keyup(function (e) {
         Cart.updateTotalAmount();
         return false;
     }
-})
+});

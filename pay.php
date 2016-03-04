@@ -1,7 +1,7 @@
 <?php
 
 $salt = 'tra7ja8c';
-$description = isset($_POST['desc'])?$_POST['desc']:'ERROR DESCRIPTION!!!';
+$description = 'DESC';// . isset($_POST['desc'])?$_POST['desc']:'ERROR DESCRIPTION!!!';
 $amount = isset($_POST['amount'])?$_POST['amount']:'ERROR AMOUNT!!!';
 $transaction_type = 'S';
 $currency = 'USD';

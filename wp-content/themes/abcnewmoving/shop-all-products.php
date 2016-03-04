@@ -22,7 +22,7 @@ $categories = $app->query("SELECT 6mdwiG_terms.name, 6mdwiG_terms.slug, 6mdwiG_t
         . "WHERE "
         . "6mdwiG_term_taxonomy.taxonomy = \"wpsc_product_category\" AND "
         . "6mdwiG_term_taxonomy.count > 0 "
-        . "ORDER BY 6mdwiG_term_taxonomy.count ; ");
+        . "ORDER BY 6mdwiG_term_taxonomy.description ; ");
 
 //*------------------ VIEWS and LOGIC -------------------------------*/
 get_header() ?>
@@ -40,7 +40,8 @@ get_header() ?>
                 . "JOIN 6mdwiG_posts "
                 . "ON 6mdwiG_term_relationships.object_id = 6mdwiG_posts.ID "
                 . "WHERE 6mdwiG_term_taxonomy.term_taxonomy_id = $term_taxonomy_id AND "
-                . "6mdwiG_posts.post_status IN ( 'publish', 'inherit' ) ; ");
+                . "6mdwiG_posts.post_status IN ( 'publish', 'inherit' ) "
+                . "ORDER BY post_date ; ");
         $flag = true;
         while($row = $products->fetch()) { 
             $product_id = $row['ID'];
