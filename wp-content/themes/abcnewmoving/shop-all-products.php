@@ -72,18 +72,21 @@ get_header() ?>
             ?>
     
                 <div class="items-buy">
-                    <a class="item-buy<?php echo $flag == true ? ' defaultDOMWindow' : '' ?>"><input type="hidden" class="product-id" value="<?php echo $row['ID'] ?>">
-                        <img src="<?php 
-                        
-                        if(empty($src['guid'])) { 
-                            if(empty($src2['guid']))
-                                echo 'http://www.m2.by/img/emptyobject/resulttable.jpeg';
-                            else 
-                                echo $src2['guid'];
-                        } else { 
-                            echo $src['guid'];                             
-                        } 
-                        ?>">
+                    <a class="item-buy<?php echo $flag == true ? ' defaultDOMWindow' : '' ?>">
+                        <input type="hidden" class="product-id" value="<?php echo $row['ID'] ?>">
+                        <div class="buy-img">
+                            <img src="<?php 
+                            
+                            if(empty($src['guid'])) { 
+                                if(empty($src2['guid']))
+                                    echo 'http://www.m2.by/img/emptyobject/resulttable.jpeg';
+                                else 
+                                    echo $src2['guid'];
+                            } else { 
+                                echo $src['guid'];                             
+                            } 
+                            ?>">
+                        </div>
                         <div class="sizes"><?php 
                             //Get types_available
                             $mm = $app->query($meta_query); $flag1 = true; while($m = $mm->fetch()) { 
@@ -137,8 +140,9 @@ get_header() ?>
                     </a>        
                 </div>
             <?php $flag = false;  
-        } 
-    } ?>
+        } ?>
+    <div class="clear"></div>
+<?php } ?>
 
     <div class="buy-open">
         <div class="overflowed">
@@ -213,6 +217,17 @@ get_header() ?>
     <input type="hidden" id="hash" name="hash" value="" />
     
     <button id="paylane-submit" style="display: none;" type="submit">Pay with PayLane</button>
+</form>
+<form action='https://www.2checkout.com/checkout/purchase' method='post'>
+  <input type='hidden' id="sid" name='sid' value='102844141' />
+  <input type='hidden' id="mode" name='mode' value='2CO' />
+  <input type='hidden' id="li_0_type" name='li_0_type' value='product' />
+  <input type='hidden' id="li_0_name" name='li_0_name' value='Sale from AbcNewMovuing' />
+  <input type='hidden' id="li_0_price" name='li_0_price' value='' />
+  <input type='hidden' id="li_0_quantity" name='li_0_quantity' value='' />
+  <input type='hidden' id="li_0_recurrence" name='li_0_recurrence' value='1 Month' />
+  <input type='hidden' id="li_0_tangible" name='li_0_tangible' value='N' />
+  <input id="submit-2checkout" name='submit' type='submit' value='Checkout' style="display: none;"/>
 </form>
 <style>
 .featured, .map{
