@@ -101,6 +101,63 @@ function initMap() {
 
 jQuery(document).ready(function ($) {
 
+    function show_modal() {
+      $('#overlay').fadeIn(500, function(){
+        $('#modal_form')
+          .css('display', 'block')
+          .animate({opacity: 1, top: '100px'}, 200);
+      });
+     }
+
+    function close_modal() {
+      $('#modal_form').animate({opacity: 0, top: '100px'}, 200, function(){
+        $(this).css('display', 'none');
+        $('#overlay').fadeOut(500);
+      });
+    }
+
+    $('.rent-order').click(function() {
+      $('#modal_form article').hide();
+      var id = '#modal1';
+    $('#modal_form article').find(".breadcrumbs").find("li").eq(1).removeClass("active");
+    $('#modal_form article').find(".breadcrumbs").find("li").eq(0).addClass("active");
+    $('#modal_form article').find(".step").removeClass("active");
+    $('#modal_form article').find(".step").eq(0).addClass("active");
+      var count = $(this).prev("div").children(".pricing-weeks").find("div").length;
+      var string = "";
+      for (var i = 1; i <= count; i++) {
+        string = string + "<tr>";
+          string = string + "<td>";
+          var first = $(this).prev("div").children(".pricing-weeks").find("div").eq(i-1).text();
+          string = string + first;
+          string = string + "</td>";
+          string = string + "<td>";
+          var second = $(this).prev("div").children(".pricing-dollars").find("div").eq(i-1).text();
+          string = string + second;
+          string = string + "</td>";
+          string = string + '<td width="123">';
+          var third = '<a href="#" class="order-in-modal">Order</a>';
+          string = string + third;
+          string = string + "</td>";
+        string = string + "</tr>";
+      }
+      $('#modal_form article').find(".title").empty().html( $(this).parent("div").children(".pricing-title").text() );
+      $('#modal_form article').find("table").empty().html( string );
+      $('#modal_form').find(id).show();
+      show_modal();
+    });
+
+    $( "body" ).on( "click", ".order-in-modal", function(e) {
+        e.preventDefault();
+        $('#modal_form article').find(".breadcrumbs").find("li").eq(1).addClass("active");
+        $('#modal_form article').find(".step").removeClass("active");
+        $('#modal_form article').find(".step").eq(1).addClass("active");
+    });
+
+    $('#modal_form .fa-times, #overlay').click(function(){ // ловим клик по крестику или подложке
+      close_modal();
+    });
+
     // alert($("otherclass").html());
 
     $('a[href^="#"]').on('click', function (event) {
@@ -169,6 +226,7 @@ var D = {};
  * @param {type} sizePrice
  * @returns {String}
  */
+D.isOnePhotos = true;
 D.priceTr = function (typeSize, sizeName, sizePrice) {
     var tr = '<tr><td class="left-line">' + sizeName + '</td>' +
             '<td class="center-line"><a class="minus-' + typeSize + '"></a>' +
@@ -207,21 +265,25 @@ D.successGetProduct = function (resp) {
         }
     }
     if(flag == false) {
-        photos += '<div class="mini-img active"><img src="';
+        photos += '<div class="mini-img pctr active"><img src="';
         photos += resp.title_photo;
         photos += '"></div>';        
     }
     for (var i in resp.photos) {
         if(resp.photos[i] == resp.title_photo) {
-            photos += '<div class="mini-img active"><img src="';
+            photos += '<div class="mini-img pctr' + i + ' active"><img src="';
         } else {
-            photos += '<div class="mini-img"><img src="';
+            photos += '<div class="mini-img pctr' + i + '"><img src="';
         }
         photos += resp.photos[i];
         photos += '"></div>';
     }
     photos += '<div class="clear"></div>';
-    jQuery('.miniatures').html(photos);
+    if(resp.photos.length > 1) {
+        jQuery('.miniatures').html(photos);        
+    } else {
+        jQuery('.miniatures').html('');
+    }
 
     jQuery('.prices').html('<tr class="thed"><td class="left-line">Size</td><td class="center-line">Quantity</td><td>Price</td></tr>');
     var metaInfo = resp.meta_info;
@@ -248,6 +310,20 @@ D.successGetProduct = function (resp) {
     if (typeof (metaInfo.type_name) != 'undefined') {
         jQuery('.thed .left-line').text(metaInfo.type_name);
     }
+    
+    var texts = '';
+    for(var i in resp.texts) {
+        if(resp.texts[i] == null) {
+            texts += '<p id="text' + i + '"></p>';
+        } else {
+            texts += '<p id="text' + i + '">' + resp.texts[i] + '</p>';
+        }
+    }
+    jQuery('.buy-descr').html(texts);
+    jQuery('#text1').css('display', 'none');
+    jQuery('#text2').css('display', 'none');
+    jQuery('#text3').css('display', 'none');
+    jQuery('#text4').css('display', 'none');
 
     jQuery('.buy-open').modal();
 }
@@ -483,7 +559,7 @@ Cart.checkout = function () {
     });*/
     localStorage.cart = '[]';    
     jQuery('#li_0_price').val(price);
-    jQuery('#li_0_name').val(Cart.tranDesc);
+    //jQuery('#li_0_name').val(Cart.tranDesc);
     jQuery('#li_0_quantity').val(Cart.allProducts.length);
     jQuery('#submit-2checkout').trigger('click');
 
@@ -523,7 +599,7 @@ Cart.checkout = function () {
     }    
 }*/
 Cart.fillCartFromStorage = function () {
-    if(localStorage.cart.length > 10) {
+    if(typeof(localStorage.cart) != 'undefined' && localStorage.cart.length > 10) {
         Cart.allProducts = JSON.parse(localStorage.cart);
     }
 }
@@ -566,6 +642,42 @@ jQuery(document).ready(function ($) {
     jQuery('.input-small').keyup(function (e) {
         console.log('input')
     })
+    
+    jQuery(document).on('click', '.pctr0 img', function () {
+        jQuery('#text0').css('display', 'block');
+        jQuery('#text1').css('display', 'none');
+        jQuery('#text2').css('display', 'none');
+        jQuery('#text3').css('display', 'none');
+        jQuery('#text4').css('display', 'none');
+    });
+    jQuery(document).on('click', '.pctr1 img', function () {
+        jQuery('#text0').css('display', 'none');
+        jQuery('#text1').css('display', 'block');
+        jQuery('#text2').css('display', 'none');
+        jQuery('#text3').css('display', 'none');
+        jQuery('#text4').css('display', 'none');
+    });
+    jQuery(document).on('click', '.pctr2 img', function () {
+        jQuery('#text0').css('display', 'none');
+        jQuery('#text1').css('display', 'none');
+        jQuery('#text2').css('display', 'block');
+        jQuery('#text3').css('display', 'none');
+        jQuery('#text4').css('display', 'none');
+    });
+    jQuery(document).on('click', '.pctr3 img', function () {
+        jQuery('#text0').css('display', 'none');
+        jQuery('#text1').css('display', 'none');
+        jQuery('#text2').css('display', 'none');
+        jQuery('#text3').css('display', 'block');
+        jQuery('#text4').css('display', 'none');
+    });
+    jQuery(document).on('click', '.pctr4 img', function () {
+        jQuery('#text0').css('display', 'none');
+        jQuery('#text1').css('display', 'none');
+        jQuery('#text2').css('display', 'none');
+        jQuery('#text3').css('display', 'none');
+        jQuery('#text4').css('display', 'block');
+    });
 });
 
 jQuery(document).keyup(function (e) {
@@ -604,3 +716,9 @@ jQuery(document).keyup(function (e) {
     }
 });
 Cart.fillCartFromStorage();
+
+jQuery(document).ready(function($) {
+    jQuery(".big-buy-open").each(function(){
+        //alert(jQuery(this).find(".miniatures").find('.mini-img').length());
+    });
+})

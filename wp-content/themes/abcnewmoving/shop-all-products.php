@@ -205,7 +205,7 @@ get_header() ?>
         </div>
     </div>
 </div>
-<form action="https://secure.paylane.com/order/cart.html" method="post">
+<!--form action="https://secure.paylane.com/order/cart.html" method="post">
     <input type="hidden" id="amount" name="amount" value="" />
     <input type="hidden" id="currency" name="currency" value="USD" />
     <input type="hidden" id="merchant_id" name="merchant_id" value="abcnewmove" />
@@ -217,16 +217,17 @@ get_header() ?>
     <input type="hidden" id="hash" name="hash" value="" />
     
     <button id="paylane-submit" style="display: none;" type="submit">Pay with PayLane</button>
-</form>
+</form-->
 <form action='https://www.2checkout.com/checkout/purchase' method='post'>
   <input type='hidden' id="sid" name='sid' value='102844141' />
   <input type='hidden' id="mode" name='mode' value='2CO' />
+  <input type='hidden' id="currency_code" name='currency_code' value='USD' />
   <input type='hidden' id="li_0_type" name='li_0_type' value='product' />
-  <input type='hidden' id="li_0_name" name='li_0_name' value='Sale from AbcNewMovuing' />
+  <input type='hidden' id="li_0_name" name='li_0_name' value='Product' />
   <input type='hidden' id="li_0_price" name='li_0_price' value='' />
   <input type='hidden' id="li_0_quantity" name='li_0_quantity' value='' />
-  <input type='hidden' id="li_0_recurrence" name='li_0_recurrence' value='1 Month' />
   <input type='hidden' id="li_0_tangible" name='li_0_tangible' value='N' />
+  <input type='hidden' name='demo' value='Y'>
   <input id="submit-2checkout" name='submit' type='submit' value='Checkout' style="display: none;"/>
 </form>
 <style>
