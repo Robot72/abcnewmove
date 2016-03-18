@@ -214,6 +214,18 @@ jQuery(document).ready(function ($) {
         }
     },3000);
 
+    $(".item-buy img").each(function(){
+        var img_item_w = $(this).width();
+        var img_item_h = $(this).height();
+        if (img_item_w > img_item_h) {
+            $(this).css({ width: "100%",height: "auto" });
+        } else if (img_item_w < img_item_h) {
+            $(this).css({ height: "100%",width: "auto" });
+        } else if (img_item_w = img_item_h) {
+
+        }
+    })
+
 });
 
 
@@ -314,11 +326,15 @@ D.successGetProduct = function (resp) {
     var texts = '';
     for(var i in resp.texts) {
         if(resp.texts[i] == null) {
-            texts += '<p id="text' + i + '"></p>';
-        } else {
-            texts += '<p id="text' + i + '">' + resp.texts[i] + '</p>';
+            if(resp.ids[i] == '541') {
+                texts += '<p id="text' + i + '">Size: 18 x 18 x 26,5. Perfect for the really big stuff that doesn’t fit into anything else, like stuffed animals, comforters, pillows, tents and sleeping bags.</p>';
+            } else {
+                texts += '<p id="text' + i + '"></p>';
+            }
+        } else { 
+            texts += '<p id="text' + i + '">' + resp.texts[i] + '</p>';            
         }
-    }
+    }    
     jQuery('.buy-descr').html(texts);
     jQuery('#text1').css('display', 'none');
     jQuery('#text2').css('display', 'none');

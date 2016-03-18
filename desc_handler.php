@@ -39,14 +39,33 @@ if (isset($_POST['product_id'])) {
     
     //Second and next photos of the product
     $all_photos = array();
-    if(isset($product_photos2)) {
+    $all_texts = array();
+    $all_ids = array();
+    if(FALSE) {
         if(empty($src['guid'])) {
-            $all_photos[] = $src2['guid'];        
+            $all_photos[] = $src2['guid'];
+            $all_texts[] = $src2['post_excerpt'];
+            $all_ids[] = $src2['ID'];
         } else {
             $all_photos[] = $src['guid'];
+            $all_texts[] = $src['post_excerpt'];
+            $all_ids[] = $src['ID'];
         }
+        
         while($photo = $product_photos2->fetch()) {
             $all_photos[] = $photo['guid'];
+            $all_texts[] = $photo['post_excerpt'];
+            $all_ids[] = $photo['ID'];
+            //echo '<pre>'; var_dump($photo); echo '</pre>';die();
+        }        
+    } else {
+        $all_photos[] = $src['guid'];
+        $all_texts[] = $src['post_excerpt'];
+        $all_ids[] = $src['ID'];
+        while($photo = $product_photos->fetch()) {
+            $all_photos[] = $photo['guid'];
+            $all_texts[] = $photo['post_excerpt'];
+            $all_ids[] = $photo['ID'];
         }
     }
     //Get all metainformation about the product.
@@ -123,8 +142,10 @@ if (isset($_POST['product_id'])) {
         'post_content' => $product_info['post_content'],
         'title_photo' => $title_photo,
         'photos' => $all_photos,
+        'texts' => $all_texts,
+        'ids' => $all_ids,
         'meta_info' => $meta_info,
-        'debug' =>count($meta_info),
+        //'debug' =>var_dump($product_photos),
         //'debug1' =>$meta_query
     );
     
